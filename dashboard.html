@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SNA Centrality Platform – Dashboard</title>
+  <!-- Tailwind CSS CDN for rapid, modern academic UI -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+  <!-- Top navigation -->
+  <header class="w-full border-b border-slate-200 bg-white/80 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-lg bg-sky-600 flex items-center justify-center text-white font-semibold">
+          SNA
+        </div>
+        <div>
+          <h1 class="text-lg font-semibold tracking-tight">
+            SNA Centrality Measurement & Visualization Platform
+          </h1>
+          <p class="text-xs text-slate-500">
+            SAA Merkezilik Ölçümü ve Görselleştirme Platformu
+          </p>
+        </div>
+      </div>
+     <!--  kullanıcı girişi eklenbilir  tema  
+      <nav class="hidden md:flex items-center gap-6 text-sm text-slate-600">
+        <a href="dashboard.html" class="font-medium text-sky-700">Dashboard</a>
+        <a href="degree.html" class="hover:text-sky-700">Degree Lab (PoC)</a>
+      </nav>  -->
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="flex-1">
+    <section class="max-w-6xl mx-auto px-4 pt-8 pb-12">
+      <!-- Hero / introduction -->
+      <div class="grid gap-8 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-center mb-10">
+        <div>
+          <p class="text-xs font-semibold tracking-[0.2em] text-sky-700 uppercase mb-2">
+           Ağ Bilimi · Sosyal Ağ Analizi
+          </p>
+          <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+            Karmaşık ağlarda merkeziliği <br>
+            Keşfet, Hesapla, Görselleştir.<br />
+          </h2>
+          <p class="text-sm md:text-base text-slate-600 leading-relaxed mb-6">
+            Bu platform, deneysel ve tasarım tabanlı araştırmaları desteklemek amacıyla,
+             biçimsel grafik kuramsal tanımları,
+             etkileşimli hesaplamayı ve zengin görsel somutlaştırmaları bir araya getiren,
+              on farklı merkezilik ölçüsü için modüler "laboratuvarlar" sunmaktadır.
+          </p>
+          <div class="flex flex-wrap items-center gap-3">
+          </div>
+        </div>
+
+        <!-- Stylized network illustration with SANA logo in the center -->
+        <div class="relative">
+          <div
+            class="aspect-[4/3] w-full rounded-2xl bg-gradient-to-br from-sky-500 via-indigo-500 to-slate-900 p-[1px] shadow-lg"
+          >
+            <div class="h-full w-full rounded-2xl bg-slate-900/90">
+              <div class="relative h-full w-full overflow-hidden">
+                <!-- simple SVG-like node/edge motif using divs -->
+                <div class="absolute inset-6">
+                  <div class="network-orbit"></div>
+                  <div class="network-orbit network-orbit-delay"></div>
+                  <div class="network-orbit network-orbit-slow"></div>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <!-- SANA logo in the center -->
+                  <svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="drop-shadow-lg">
+                    <circle cx="44" cy="44" r="40" fill="url(#sanaGrad)" />
+                    <text x="50%" y="52%" text-anchor="middle" alignment-baseline="middle"
+                          font-size="2.1rem" font-weight="bold"
+                          class="font-sans select-none"
+                          fill="#fff" style="letter-spacing: 0.12em;">
+                      SNA
+                    </text>
+                    <defs>
+                      <linearGradient id="sanaGrad" x1="0" y1="0" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#0ea5e9"/>
+                        <stop offset="0.4" stop-color="#6366f1"/>
+                        <stop offset="1" stop-color="#0f172a"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     <!-- Centrality Cards Grid -->
+<section class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+  <!-- Degree Centrality -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-sky-600 text-xs font-semibold text-white">
+          D
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-sky-800">
+          Degree Centrality
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Derece Merkeziliği
+      </h3>
+      <p class="text-sm text-slate-600">
+        Bağlantı merkeziliği, bir düğümün sahip olduğu doğrudan bağlantı sayısını ölçer ve yerel etkileşim kapasitesini ve anlık popülerliğini temsil eder.
+
+      </p>
+     
+    </div>
+    <div class="mt-4">
+      <a
+        href="degree.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Closeness Centrality -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-red-200 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-xs font-semibold text-white">
+          C
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-red-800">
+          Closeness Centrality
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Yakınlık Merkeziliği
+      </h3>
+      <p class="text-sm text-slate-600">
+        Yakınlık merkeziliği, bir düğümün ağdaki diğer tüm düğümlere ne kadar yakın olduğunu ölçer ve bu,
+         ulaşılabilir tüm düğümlere olan en kısa yol mesafelerinin toplamının tersi olarak ifade edilir. </p>
+      
+    </div>
+    <div class="mt-4">
+      <a
+        href="closeness.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Betweenness Centrality -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-xs font-semibold text-white">
+          B
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-amber-900">
+          Betweenness Centrality
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Aradalık Merkeziliği
+      </h3>
+      <p class="text-sm text-slate-600">
+        Düğümler arası bağlantı merkeziliği, bir düğümün diğer düğüm çiftleri arasındaki en kısa yollar üzerinde ne sıklıkla yer aldığını ölçerek, 
+        ağdaki bilgi veya kaynak akışı üzerindeki kontrolünü yansıtır.
+      </p>
+      
+    </div>
+    <div class="mt-4">
+      <a
+        href="betweenness.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Eigenvector Centrality -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 text-xs font-semibold text-white">
+          EV
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-indigo-900">
+          Eigenvector Centrality
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Özvektör Merkeziliği
+      </h3>
+      <p class="text-sm text-slate-600">
+        Özvektör merkeziliği, ağın komşuluk matrisinin önde gelen özvektörü olarak formüle edilen,
+         diğer yüksek derecede merkezi düğümlere bağlı düğümlere daha yüksek puanlar atar.
+      </p>
+    
+    </div>
+    <div class="mt-4">
+      <a
+        href="eigenvector.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+        >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Harmonic Centrality -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-xs font-semibold text-white">
+          H
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-emerald-900">
+          Harmonic Centrality
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Harmonik Merkeziliği
+      </h3>
+      <p class="text-sm text-slate-600">
+        Harmonik merkezilik, bir düğümden diğer tüm düğümlere olan en kısa yol mesafelerinin tersini toplar 
+        ve bağlantısız ağlar için yakınlık merkeziliğinin sağlam bir varyantını sunar.
+      </p>
+         
+    <div class="mt-4">
+      <a
+        href="harmonic.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Katz Centrality -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-fuchsia-50 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-fuchsia-600 text-xs font-semibold text-white">
+          K
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-fuchsia-900">
+          Katz Centrality
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Katz Merkeziliği
+      </h3>
+      <p class="text-sm text-slate-600">
+        Katz merkeziliği, bir düğümden diğer düğümlere olan tüm yolları sayarak,
+         uzunluklarına göre üstel olarak azaltarak ve sıfır olmayan puanlar elde etmek için bir sabit ekleyerek özvektör merkeziliğini genişletir.
+      </p>
+      
+    </div>
+    <div class="mt-4">
+      <a
+        href="katz.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- PageRank -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-violet-50 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white">
+          PR
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-violet-900">
+          PageRank
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        PageRank
+      </h3>
+      <p class="text-sm text-slate-600">
+        PageRank, giden bağlantıları bir sönümleme faktörüyle
+         takip eden rastgele bir internet kullanıcısını modeller ve düğümleri uzun vadeli ziyaret olasılıklarına göre sıralayan durağan bir olasılık dağılımı üretir.
+      </p>
+      
+    </div>
+    <div class="mt-4">
+      <a
+        href="pagerank.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Percolation Centrality -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-rose-50 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-rose-600 text-xs font-semibold text-white">
+          PC
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-rose-900">
+          Percolation Centrality
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Percolation Merkeziliği
+      </h3>
+      <p class="text-sm text-slate-600">
+         Percolation merkeziliği, düğümlerin veya kenarların zamanla değişen geçiş durumlarına göre en kısa yollara olan katkısını ağırlıklandırarak, 
+        bir düğümün dinamik difüzyon süreçlerindeki önemini değerlendirir.</p>
+     
+    </div>
+    <div class="mt-4">
+      <a
+        href="percolation.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Freeman Centralization -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-700 text-xs font-semibold text-white">
+          FC
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-slate-900">
+          Freeman Centralization
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Freeman Merkezileşmesi
+      </h3>
+      <p class="text-sm text-slate-600">
+        Freeman'ın merkezileşme endeksi, düğüm merkezilik değerlerindeki farklılıkları,
+         maksimum düzeyde merkezileşmiş bir referans grafiğe göre toplayarak, ağ düzeyinde yapısal eşitsizliğin bir ölçüsünü verir.</p>
+      
+    </div>
+    <div class="mt-4">
+      <a
+        href="freeman.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+  <!-- Decay Centrality -->
+  <article
+    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1">
+        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-teal-600 text-xs font-semibold text-white">
+          DC
+        </span>
+        <span class="text-xs font-medium uppercase tracking-wide text-teal-900">
+          Decay Centrality
+        </span>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900">
+        Decay Merkeziliği
+      </h3>
+      <p class="text-sm text-slate-600">
+        Decay merkeziliği, ağdaki tüm düğümlerin katkılarını toplar
+         ve her birini jeodezik mesafeyle azalan bir faktörle iskonto eder; böylece yakın komşular uzak olanlardan daha fazla ağırlık kazanır.</p>
+     
+    </div>
+    <div class="mt-4">
+      <a
+        href="decay.html"
+        class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+      >
+        Laboratuvarı Aç
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </article>
+
+</section>
+
+      <section class="mt-10 relative left-1/2 -translate-x-1/2 w-[min(96vw,1400px)]">
+        <div class="rounded-xl border border-slate-200 bg-white p-4 md:p-5 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+            <div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Dinamik Ağ Analizi Laboratuvarı</h3>
+              <p class="text-xs text-slate-600">
+                Havaalanı rota ağında 10 merkezilik ölçümünü tek graf modelinde anlık inceleyin.
+              </p>
+            </div>
+            <button
+              id="dynamicLabRebuild"
+              type="button"
+              class="inline-flex items-center gap-2 rounded-md bg-sky-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-700"
+            >
+             Hesapla ve Görselleştir
+            </button>
+          </div>
+
+          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_290px]">
+            <div class="relative rounded-md border border-slate-200 bg-slate-900 p-1">
+              <div id="dynamicNetworkGraph" class="h-[62vh] md:h-[70vh] xl:h-[78vh] rounded-md"></div>
+              <div id="dynamicNodeTooltip" class="hidden absolute z-20 min-w-[220px] rounded-md border border-slate-200 bg-white p-3 text-[11px] shadow-lg"></div>
+            </div>
+
+            <aside class="rounded-md border border-slate-200 bg-slate-50 p-3">
+              <p class="text-xs font-semibold text-slate-800 mb-2">Ölçüm Türü Seç</p>
+              <div id="dynamicMetricMenu" class="space-y-2 mb-4"></div>
+              <div id="dynamicLabSummary" class="space-y-1 text-xs text-slate-600 mb-3"></div>
+              <p id="dynamicLabStatus" class="text-xs text-slate-500"></p>
+              <p class="text-[11px] text-slate-500 mt-3">
+                Düğümlerin renkleri yeşilden kırmızıya seçilen metrik değerine göre ölçeklendirilir.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      </section>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white/60">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
+      <p class="text-[11px] text-slate-500">
+        SNA Centrality Measurement & Visualization Platform · Design-Based Research Prototype
+      </p>
+      
+    </div>
+  </footer>
+  <script src="assets/js/dynamic-network-lab.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freeman Merkezileşme Laboratuvarı</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <!-- Cytoscape.js for graph visualization -->
+  <script src="https://unpkg.com/cytoscape@3.28.1/dist/cytoscape.min.js"></script>
+  <!-- MathJax for LaTeX rendering -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+  <!-- Top bar -->
+  <header class="w-full border-b border-slate-200 bg-white/80 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a
+          href="dashboard.html"
+          class="inline-flex items-center justify-center h-9 w-9 rounded-lg bg-sky-600 text-white text-sm font-semibold hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
+        >
+          ←
+        </a>
+        <div>
+          <p class="text-xs font-semibold tracking-[0.25em] text-sky-700 uppercase mb-1">
+            Centrality Laboratuvarı
+          </p>
+          <h1 class="text-xl md:text-2xl font-semibold tracking-tight text-slate-900">
+            Freeman Centralization
+          </h1>
+          <p class="text-xs text-slate-500">
+          Freeman Merkezileşmesi Laboratuvarı</p>
+        </div>
+      </div>
+    
+    </div>
+  </header>
+
+  <!-- Main layout: three functional zones -->
+  <main class="flex-1">
+    <section class="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-6">
+      <!-- Grid: theory · input & calculation · visualization -->
+      <div class="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.3fr)_minmax(0,1.4fr)]">
+        <!-- Theoretical panel -->
+        <aside class="panel">
+          <h2 class="panel-title">1. Keşfet</h2>
+         
+          <p class="panel-body">
+            Freeman merkezileşme indeksi, ağdaki düğümler arasındaki merkezilik puanlarının ne kadar
+            eşitsiz olduğunu; yıldız gibi en merkezileşmiş örnek bir karşılaştırma grafiğine göre
+            özetler. Yönsüz (undirected) ağlarda derece merkezileşmesi için referans, kusursuz
+            bir yıldız ağıdır.
+          </p>
+          <div class="math-box">
+            <span class="latex">
+              \( C_D^{\text{centralization}} =
+              \dfrac{ \sum_{i=1}^{n} \big( \deg(v^*) - \deg(v_i) \big) }
+              { (n - 1)(n - 2) } \)
+            </span>
+          </div>
+          <p class="panel-section-label mt-4">Sezgisel açıklama</p>
+          <p class="panel-body">
+            Her düğümün derecesinin ağdaki maksimum dereceden ne kadar eksik kaldığını ölçer
+            ve bu eksiklerin toplamını alır. Sonuç daha sonra yıldız grafiğinde elde edilen değerle
+            normalize edilerek; tüm düğümlerin eşit derecede merkezi olduğu durumda 0 ile,
+            maksimum merkezileşmenin yıldız-benzeri yapıya karşılık geldiği durumda 1 arasında
+            ağ düzeyinde bir puan üretir.
+          </p>
+          <p class="panel-section-label mt-4">Ölçüm varsayımları</p>
+          <ul class="list-disc pl-5 text-xs text-slate-600 space-y-1">
+            <li>Bu merkezileşme indeksi derecelere dayanır; diğer merkezilik ölçümlerinin kendi Freeman merkezileşme biçimleri vardır.</li>
+            <li>Normalizasyon paydası \((n-1)(n-2)\), yıldız ağındaki teorik maksimumu temsil eder.</li>
+            <li>Yorum ağ düzeyindedir; tekil düğüm düzeyinde değil.</li>
+          </ul>
+        </aside>
+
+        <!-- Input & calculation zone -->
+        <section class="panel">
+          <h2 class="panel-title">2. Hesapla</h2>
+          <p class="panel-body mb-3">
+            Ağınızı kenar listesi (CSV benzeri) veya JSON olarak girin. Ardından temel derece
+            dağılımını ve ağın Freeman derece merkezileşmesini hesaplayın.
+          </p>
+
+          <div class="bg-sky-50 border border-sky-100 rounded-md px-3 py-2 mb-3">
+            <p class="text-[11px] text-sky-900 leading-relaxed">
+              <span class="font-semibold">Kabul edilen formatlar</span>:
+              <br />
+              <span class="font-mono text-[10px]">
+                A,B<br />
+                B,C<br />
+                C,D
+              </span>
+              (kenar listesi, satır başına bir yönsüz kenar) <span class="font-semibold">veya</span>
+              aşağıdaki gibi bir JSON nesnesi
+              <span class="font-mono text-[10px]">
+                {"nodes":["A","B"],"edges":[["A","B"]]}
+              </span>.
+            </p>
+          </div>
+
+          <label for="graphInput" class="input-label">Ağ tanımı</label>
+          <textarea
+            id="graphInput"
+            class="input-textarea"
+            spellcheck="false"
+          ></textarea>
+
+          <div class="mt-3 flex w-full flex-col gap-3">
+            <div class="w-full min-w-0">
+              <label
+                for="fileInput"
+                class="flex w-full min-w-0 cursor-pointer flex-col gap-1.5 rounded-md border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 hover:border-sky-500 hover:text-sky-700"
+              >
+                <span class="flex shrink-0 items-center gap-2">
+                  <span class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded bg-slate-100 text-[10px] text-slate-500">
+                    ⇪
+                  </span>
+                  Dosya yükle (.csv / .json / .txt)
+                </span>
+                <span class="min-w-0 truncate text-[11px] text-slate-400" id="fileNameLabel">Dosya seçilmedi</span>
+              </label>
+              <input id="fileInput" type="file" class="hidden" accept=".csv,.json,.txt" />
+            </div>
+
+            <button
+              id="calculateBtn"
+              type="button"
+              class="inline-flex w-full items-center justify-center rounded-md bg-sky-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              Hesapla ve Görselleştir
+            </button>
+          </div>
+
+          <p id="errorBox" class="mt-3 text-[11px] text-red-600 hidden"></p>
+          <p id="statusBox" class="mt-2 text-[11px] text-slate-500 hidden"></p>
+        </section>
+
+        <!-- Visualization canvas -->
+        <section class="panel flex flex-col min-h-[260px]">
+          <h2 class="panel-title">3. Görselleştir</h2>
+          <p class="panel-body mb-2">
+            Düğümler derecelerini yansıtan boyut ve renklerle çizilir; genel ölçekte Freeman
+            merkezileşme indeksi, yapının ne kadar “yıldız-benzeri” olduğunu özetler.
+          </p>
+          <div
+            id="cy"
+            class="mt-2 rounded-md border border-slate-200 bg-slate-900/95 h-64 md:h-72 lg:h-[18rem]"
+          ></div>
+
+          <div class="mt-3 grid gap-2 sm:grid-cols-2 text-[11px] text-slate-600">
+            <div>
+              <p class="font-semibold text-slate-700 mb-1">Özet istatistikler</p>
+              <ul id="statsList" class="space-y-0.5">
+                <!-- Populated by JS -->
+              </ul>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-700 mb-1">Gösterge</p>
+              <p>
+                Bireysel düğüm yarıçapı \( \propto \deg(v) \) ile; ağ düzeyi Freeman merkezileşme,
+                bu derecelerin yıldızla karşılaştırıldığında ne kadar eşitsiz olduğunu gösterir.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Results table -->
+      <section class="panel">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="panel-title text-base">Düğüm düzeyinde ve ağ sonuçları</h3>
+          <p class="text-[11px] text-slate-500">
+            Düğüm dereceleri ve ağın Freeman derece merkezileşmesi.
+          </p>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-left text-xs">
+            <thead class="border-b border-slate-200 bg-slate-100/60">
+              <tr>
+                <th class="px-3 py-2 font-semibold text-slate-700">Düğüm</th>
+                <th class="px-3 py-2 font-semibold text-slate-700">
+                  Derece \( \deg(v) \)
+                </th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody" class="divide-y divide-slate-100">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Sample datasets -->
+      <section class="panel">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="panel-title text-base">Örnek veri kümesini yükle</h3>
+          <p class="text-[11px] text-slate-500">
+            Merkezilik örüntülerini hızlıca incelemek için özenle hazırlanmış örnekleri kullanın.
+          </p>
+        </div>
+        <div class="grid gap-3 md:grid-cols-3 text-xs">
+          <button
+            type="button"
+            class="sample-btn"
+            data-sample="triangle"
+          >
+            Basit üçgen<br />
+            <span class="text-[11px] text-slate-500">Tüm düğümler eşit; merkezileşme sıfıra yakın.</span>
+          </button>
+
+          <button
+            type="button"
+            class="sample-btn"
+            data-sample="star"
+          >
+            Yıldız ağı<br />
+            <span class="text-[11px] text-slate-500">Yüksek dereceli tek merkez; maksimum merkezileşme.</span>
+          </button>
+
+          <button
+            type="button"
+            class="sample-btn"
+            data-sample="line"
+          >
+            Çizgi ağı<br />
+            <span class="text-[11px] text-slate-500">Ara derece eşitsizliği; orta düzey merkezileşme.</span>
+          </button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white/60">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
+      <p class="text-[11px] text-slate-500">
+        Freeman Merkezileşme Laboratuvarı · Cytoscape.js ile ön uçta hesaplama.
+      </p>
+     
+    </div>
+  </footer>
+
+  <script src="assets/js/freeman.js"></script>
+</body>
+</html>
+
